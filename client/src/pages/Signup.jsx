@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 export default function Signup() {
   const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -10,10 +12,10 @@ export default function Signup() {
     });
   };
 
-
   const submitData = async (e) => {
     try {
       e.preventDefault();
+
       const res = await fetch("/API/auth/signup", {
         method: "POST",
         headers: {
@@ -22,13 +24,22 @@ export default function Signup() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      if (data.success === false) {
+        setError(data.message);
+        window.alert(data.message); // alert the error message
+
+        return;
+      } else {
+        window.alert("Signup successfull");
+      }
+
       console.log(data);
     } catch (error) {
       console.error("Error:", error);
       // Handle error appropriately, e.g., show a message to the user
     }
   };
-    console.log(formData)
+  console.log(formData);
   return (
     <div className="flex justify-center items-center max-w-lg mx-auto">
       <div className="flex flex-col w-full">
