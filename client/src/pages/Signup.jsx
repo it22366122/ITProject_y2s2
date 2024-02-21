@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../loading.css";
 
 export default function Signup() {
   const [formData, setFormData] = useState({});
@@ -16,6 +17,8 @@ export default function Signup() {
   const submitData = async (e) => {
     try {
       e.preventDefault();
+
+      showLoadingOverlay();
 
       const res = await fetch("/API/auth/signup", {
         method: "POST",
@@ -38,8 +41,30 @@ export default function Signup() {
     } catch (error) {
       console.error("Error:", error);
       // Handle error appropriately, e.g., show a message to the user
+    } finally {
+      // Hide loading overlay
+      setTimeout(hideLoadingOverlay, 1000);
     }
   };
+
+  // Function to show loading overlay
+  const showLoadingOverlay = () => {
+    // Create and append loading overlay element to the document body
+    const overlay = document.createElement("div");
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = `<div class="spinner"></div>`;
+    document.body.appendChild(overlay);
+  };
+
+  // Function to hide loading overlay
+  const hideLoadingOverlay = () => {
+    // Remove loading overlay element from the document body
+    const overlay = document.querySelector(".loading-overlay");
+    if (overlay) {
+      overlay.remove();
+    }
+  };
+
   console.log(formData);
   return (
     <div className="flex justify-center items-center max-w-lg mx-auto">
