@@ -36,6 +36,7 @@ export default function Signup() {
       } else {
         window.alert("Sign Up successfull");
       }
+      
       navigate("/signin");
       console.log(data);
     } catch (error) {

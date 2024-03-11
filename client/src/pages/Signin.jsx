@@ -1,11 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import "../loading.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // Declare navigate
 
   const handleChange = (e) => {
     setFormData({
@@ -17,10 +24,7 @@ export default function Signin() {
   const submitData = async (e) => {
     try {
       e.preventDefault();
-
-      // Show loading effect
-      showLoadingOverlay();
-
+      dispatch(signInStart());
       const res = await fetch("/API/auth/signin", {
         method: "POST",
         headers: {
@@ -29,37 +33,15 @@ export default function Signin() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (data.success === false) {
-        setError(data.message);
-        window.alert(data.message); // alert the error message
-      } else {
-        navigate("/");
-      }
       console.log(data);
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(signInSuccess(data));
+      navigate("/"); // Use navigate to redirect to "/"
     } catch (error) {
-      console.error("Error:", error);
-      window.alert("Error: " + error.message);
-    } finally {
-      // Hide loading overlay 
-      setTimeout(hideLoadingOverlay, 1000);
-    }
-  };
-
-  // Function to show loading overlay
-  const showLoadingOverlay = () => {
-    // Create and append loading overlay element to the document body
-    const overlay = document.createElement("div");
-    overlay.className = "loading-overlay";
-    overlay.innerHTML = `<div class="spinner"></div>`;
-    document.body.appendChild(overlay);
-  };
-
-  // Function to hide loading overlay
-  const hideLoadingOverlay = () => {
-    // Remove loading overlay element from the document body
-    const overlay = document.querySelector(".loading-overlay");
-    if (overlay) {
-      overlay.remove();
+      dispatch(signInFailure(error.message));
     }
   };
 
