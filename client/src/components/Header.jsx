@@ -61,15 +61,20 @@ export default function Header() {
         >
           Career
         </Navbar.Link>
+
+        {currentUser ? ( <p style={{ color: "white", textAlign: 'left' }}>Welcome, {currentUser.username}</p>):(null)}
       </Navbar.Collapse>
-      <p style={{ color: "white", textAlign: 'left' }}>Welcome, {currentUser.username}</p>
+     
       {currentUser ? (
+        
         <Dropdown
           arrowIcon={false}
           inline
           label={
             <Avatar alt="profile pic" img={currentUser.profilePic} rounded />
+            
           }
+          
         >
           <Dropdown.Header>
             <span className="block text-sm">@ {currentUser.username}</span>
