@@ -1,50 +1,65 @@
 import { MdElderlyWoman } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Services from "./dropdownHeader";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 export default function Header() {
   return (
-    <header className=" bg-gradient-to-r from-sky-600 to-sky-800 ... shadow-xl	">
-      <div className="flex justify-between items-center max-w-6xl mx -auto p-5">
-        <Link to="/">
-          <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
-            <span className="text-slate-600 font-mono">Seni</span>
-            <span className="font-mono font-style:bold">Care </span>
-            <MdElderlyWoman className=" " />
-          </h1>
-        </Link>
-
-        <form className="bg-slate-100 p-3 rounded-lg flex items-center">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="bg-transparent focus:outline-none w-24 sm:w-64"
-          />
-          <button>
-            <FaSearch className="text-slate-600" />
-          </button>
-        </form>
-
-        <div>
-          <ul className="flex gap-6 font-mono text-slate-50  ">
-            <Link to="/">
-              <li className="hidden sm:inline hover:text-sky-300">Home </li>
-            </Link>
-            <Link to="/Services">
-              <li className="hidden sm:inline hover:text-sky-300">Services</li>
-            </Link>
-            <Link to="/Career">
-              <li className="hidden sm:inline hover:text-sky-300"> Career</li>
-            </Link>
-            <Link to="/about">
-              <li className="hidden sm:inline hover:text-sky-300">AboutUs </li>
-            </Link>
-            <Link to="/Signin">
-              <li className=" sm:inline hover:text-sky-300">SignIn </li>
-            </Link>
-          </ul>
-        </div>
+    <Navbar
+      fluid
+      rounded
+      className="bg-gradient-to-r from-sky-600 to-sky-800 ... shadow-xl"
+    >
+      <Navbar.Brand href="/">
+        <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt=" Logo" />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          SeniCare
+        </span>
+      </Navbar.Brand>
+      <div className="flex md:order-2">
+        <Dropdown
+          arrowIcon={false}
+          inline
+          label={
+            <Avatar
+              alt="User settings"
+              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              rounded
+            />
+          }
+        >
+          <Dropdown.Header>
+            <span className="block text-sm">Bonnie Green</span>
+            <span className="block truncate text-sm font-medium">
+              name@flowbite.com
+            </span>
+          </Dropdown.Header>
+          <Dropdown.Item>Dashboard</Dropdown.Item>
+          <Dropdown.Item>Settings</Dropdown.Item>
+          <Dropdown.Item>Earnings</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item>Sign out</Dropdown.Item>
+        </Dropdown>
+        <Navbar.Toggle />
       </div>
-    </header>
+      <Navbar.Collapse className="text-white ">
+        <Navbar.Link href="/" className="text-white hover:text-green-500">
+          Home
+        </Navbar.Link>
+        <Navbar.Link href="/about" className="text-white">
+          About
+        </Navbar.Link>
+        <Navbar.Link href="/services" className="text-white">
+          Services
+        </Navbar.Link>
+        <Navbar.Link href="#" className="text-white">
+          Career
+        </Navbar.Link>
+        <Navbar.Link href="/signin" className="text-white">
+          Sign In
+        </Navbar.Link>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }
