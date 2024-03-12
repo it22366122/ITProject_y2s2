@@ -34,11 +34,11 @@ export const signin = async (req, res, next) => {
     const token = jwt.sign({ id: userExists._id }, process.env.TOKEN_SCRT); //token scrt is in .env
 
     //crating a cookie to save user data in the broser
-
+    
     res
       .cookie("access-token", token, { HttpOnly: true })
       .status(200)
-      .json({ userExists });
+      .json(userExists);
   } catch (error) {
     next(error);
   }
@@ -46,7 +46,7 @@ export const signin = async (req, res, next) => {
 
 //google auth API
 export const google = async (req, res, next) => {
-  const { email, name, photoUrl } = req.body;
+  const { email, name, googlePhotoUrl } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -55,7 +55,7 @@ export const google = async (req, res, next) => {
       res
         .cookie("access-token", token, { HttpOnly: true })
         .status(200)
-        .json({ rest });
+        .json(rest);
     } else {
       //creating a random pwd to users that doesnt exist
       const randowmPassword =
@@ -70,7 +70,7 @@ export const google = async (req, res, next) => {
           Math.random().toString(9).slice(-4),
         email,
         password: hashedPwd,
-        profilePic: photoUrl,
+        profilePic: googlePhotoUrl,
       });
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, process.env.TOKEN_SCRT);
