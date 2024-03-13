@@ -2,7 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv"; // for hidden url
 import authRouter from "./routes/auth.route.js";
-import { fail } from "assert";
+import jobRoutes from "./routes/job.route.js"
+
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.listen(3000, () => {
 });
 
 app.use("/API/auth", authRouter);
+app.use("/API/post",jobRoutes)
 
 //middleware for error handling 
 app.use((err, req, res, next) => {
