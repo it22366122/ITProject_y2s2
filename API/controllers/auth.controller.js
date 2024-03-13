@@ -31,10 +31,13 @@ export const signin = async (req, res, next) => {
     if (!validPwd) {
       return next(errorHandler(401, "Invalid Username or Password!!!"));
     }
-    const token = jwt.sign({ id: userExists._id }, process.env.TOKEN_SCRT); //token scrt is in .env
+    const token = jwt.sign(
+      { id: userExists._id, isAdmin: userExists.isAdmin },
+      process.env.TOKEN_SCRT
+    ); //token scrt is in .env
 
     //crating a cookie to save user data in the broser
-    
+
     res
       .cookie("access-token", token, { HttpOnly: true })
       .status(200)
@@ -50,7 +53,10 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.TOKEN_SCRT);
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.TOKEN_SCRT
+      );
       const { password, ...rest } = user._doc;
       res
         .cookie("access-token", token, { HttpOnly: true })
@@ -73,7 +79,10 @@ export const google = async (req, res, next) => {
         profilePic: googlePhotoUrl,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.TOKEN_SCRT);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.TOKEN_SCRT
+      );
       const { password, ...rest } = newUser._doc;
       res
         .status(200)

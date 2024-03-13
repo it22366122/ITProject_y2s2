@@ -9,10 +9,7 @@ export default function ProfileDash() {
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
       <form className="flex flex-col gap-4">
-        <div
-          className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
-          
-        >
+        <div className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full">
           <img
             src="../src/img/dp.jpeg"
             alt=""
@@ -20,6 +17,11 @@ export default function ProfileDash() {
             style={{ objectFit: "cover" }}
           />
         </div>
+        <TextInput
+          type="text"
+          defaultValue={currentUser.fullName}
+          disabled
+        ></TextInput>
         <TextInput
           type="text"
           defaultValue={currentUser.username}
@@ -32,7 +34,6 @@ export default function ProfileDash() {
         ></TextInput>
         <Button className="bg-red-500">Sign Out </Button>
       </form>
-      
     </div>
   );
 }
