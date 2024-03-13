@@ -9,6 +9,8 @@ import tnc from "./pages/tnc";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import AddJob from "./pages/AddJob";
 
 export default function App() {
   return (
@@ -20,10 +22,13 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/profile" element={<Profile />} />
-        <Route element={<PrivateRoute/>}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-        
+
+        <Route element={<AdminPrivateRoute />}>
+          <Route path="/add-vacancy" element={<AddJob />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

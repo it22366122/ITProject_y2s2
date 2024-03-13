@@ -1,7 +1,8 @@
 import React from "react";
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useLocation ,Link} from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   HiUser,
   HiArrowSmRight,
@@ -12,10 +13,10 @@ import {
 } from "react-icons/hi";
 
 export default function SidebarDash() {
-
-
+  const currentUser = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("");
+
   useEffect(() => {
     const urlParam = new URLSearchParams(location.search);
     const tabFormURL = urlParam.get("tab");
@@ -23,7 +24,6 @@ export default function SidebarDash() {
       setTab(tabFormURL);
     }
   }, [location.search]);
-
 
   return (
     <Sidebar className=" w=full">
@@ -39,10 +39,12 @@ export default function SidebarDash() {
               Profile
             </Sidebar.Item>
           </Link>
+
           <Sidebar.Item icon={HiArrowSmRight} className="cursor-pointer">
             SignOut
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
     </Sidebar>
-  );}
+  );
+}
