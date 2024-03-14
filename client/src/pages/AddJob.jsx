@@ -1,10 +1,72 @@
-import { Button, FileInput, Select, TextInput } from "flowbite-react";
-import React from "react";
+import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 
 export default function AddJob() {
+  const [file, setFile] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [formData, setFormData] = useState({});
+
+  const uploadImage = async () => {
+    try {
+      if (!file) {
+        setImageUploadError("Image Error");
+        return;
+      }
+      setImageUploadError(null);
+
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "_" + file.name;
+      const storageRef = ref(storage, fileName);
+      const metadata = {
+        contentType: "image/*", // Specify content type as image
+      };
+
+      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImageUploadProgress(progress.toFixed(0));
+        },
+        (error) => {
+          setImageUploadError("Upload image failed");
+          setImageUploadProgress(null);
+        },
+        () => {
+          // This callback is called when the upload is complete
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              setImageUploadProgress(null);
+              setImageUploadError(null);
+              setFormData({ ...formData, image: downloadURL });
+            })
+            .catch((error) => {
+              // Handle any errors that occur during getting download URL
+              console.error("Error getting download URL:", error);
+              setImageUploadError("Failed to get download URL");
+              setImageUploadProgress(null);
+            });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      setImageUploadError("Upload failed");
+      setImageUploadProgress(null);
+    }
+  };
+
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">
@@ -31,17 +93,28 @@ export default function AddJob() {
           <TextInput
             type="text"
             placeholder="Salary"
-            
             id="salary"
             className="flex-1"
           ></TextInput>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
-          <FileInput typeof="file" accept="image/*" />
-          <Button type="button" size="sm" outline>
+          <FileInput
+            typeof="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <Button type="button" size="sm" outline onClick={uploadImage}>
             Upload cover Photo
           </Button>
         </div>
+        {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt=""
+            className="w-full h-72 object-cover"
+          />
+        )}
         <ReactQuill
           theme="snow"
           placeholder="Enter job description"
