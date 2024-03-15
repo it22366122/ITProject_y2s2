@@ -9,12 +9,42 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function AddJob() {
   const [file, setFile] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
+  const navigate = useNavigate();
+  //console.log(formData);
+
+  //function for submit form data to DB
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); //prevent refreshing
+    try {
+      const res = await fetch("/API/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        navigate("/JobList");
+      }
+    } catch (error) {
+      setPublishError("Error in submiting data!!!");
+    }
+  };
 
   const uploadImage = async () => {
     try {
@@ -53,7 +83,7 @@ export default function AddJob() {
               setFormData({ ...formData, image: downloadURL });
             })
             .catch((error) => {
-              // Handle any errors that occur during getting download URL
+              // Handle  errors that occur during getting download URL
               console.error("Error getting download URL:", error);
               setImageUploadError("Failed to get download URL");
               setImageUploadProgress(null);
@@ -72,7 +102,7 @@ export default function AddJob() {
       <h1 className="text-center text-3xl my-7 font-semibold">
         Create Job Vacancy
       </h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -80,8 +110,15 @@ export default function AddJob() {
             required
             id="title"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           ></TextInput>
-          <Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value=" ">Select Job category</option>
             <option value="Caregiver">Caregiver</option>
             <option value="Nurse">Nurse</option>
@@ -95,6 +132,9 @@ export default function AddJob() {
             placeholder="Salary"
             id="salary"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, salary: e.target.value })
+            }
           ></TextInput>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
@@ -119,7 +159,11 @@ export default function AddJob() {
           theme="snow"
           placeholder="Enter job description"
           className="h-50 mb-5"
+          onChange={(value) => {
+            setFormData({ ...formData, description: value });
+          }}
         />
+        {publishError && <Alert color="failure">{publishError}</Alert>}
         <Button type="submit" size="sm" outline>
           Post Vacancy
         </Button>
