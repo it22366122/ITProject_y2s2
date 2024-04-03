@@ -39,7 +39,7 @@ export default function AddJob() {
       }
       if (res.ok) {
         setPublishError(null);
-        navigate("/JobList");
+        navigate("/all-jobs");
       }
     } catch (error) {
       setPublishError("Error in submiting data!!!");

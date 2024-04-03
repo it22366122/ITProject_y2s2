@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AddJob from "./pages/AddJob";
+import JobList from "./pages/JobList";
 
 export default function App() {
   return (
@@ -28,6 +29,10 @@ export default function App() {
 
         <Route element={<AdminPrivateRoute />}>
           <Route path="/add-vacancy" element={<AddJob />} />
+        </Route>
+
+        <Route element={<AdminPrivateRoute />}>
+          <Route path="/all-jobs" element={<JobList />} />
         </Route>
       </Routes>
     </BrowserRouter>
