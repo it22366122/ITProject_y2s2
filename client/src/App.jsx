@@ -11,7 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AddJob from "./pages/AddJob";
-import JobList from "./pages/JobList";
+import JobList from "./components/JobList";
 
 export default function App() {
   return (

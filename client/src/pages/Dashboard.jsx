@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ProfileDash from "../components/ProfileDash";
 import SidebarDash from "../components/SidebarDash";
+import JobList from "../components/JobList";
 
 
 export default function Dashboard() {
@@ -24,6 +25,8 @@ export default function Dashboard() {
 
       {/*Profile info section */}
       {tab === "profile" && <ProfileDash />}
+
+      {tab === "jobs" && <JobList/>}
     </div>
   );
 }

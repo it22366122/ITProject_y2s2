@@ -43,9 +43,9 @@ export default function SidebarDash() {
             </Sidebar.Item>
           </Link>
           {currentUser.isAdmin && (
-            <Link to="/dashboard?tab=posts">
+            <Link to="/dashboard?tab=jobs">
               <Sidebar.Item
-                active={tab === "posts"}
+                active={tab === "jobs"}
                 icon={HiDocumentText}
                 as="div"
               >
