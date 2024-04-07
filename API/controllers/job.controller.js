@@ -1,4 +1,5 @@
 import Job from "../models/vacancy.model.js";
+import { errorHandler } from "../utils/error.js";
 
 export const create = async (req, res, next) => {
   const newJob = new Job({
@@ -13,6 +14,7 @@ export const create = async (req, res, next) => {
   }
 };
 
+//finction to read jobs
 export const getjobs = async (req, res, next) => {
   try {
     const start = parseInt(req.query.start) || 0;
@@ -27,8 +29,7 @@ export const getjobs = async (req, res, next) => {
       }),
     })
       .sort({ updatedAt: sort })
-      .skip(start)
-      
+      .skip(start);
 
     const totalVacancy = await Job.countDocuments(); //to count total vacs in db
 
@@ -36,6 +37,16 @@ export const getjobs = async (req, res, next) => {
       totalVacancy,
       job,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//finction to delete jobs
+export const deletejob = async (req, res, next) => {
+  try {
+    await Job.findByIdAndDelete(req.params.jobId);
+    res.status(200).json("The vacancy has been deleted successfully");
   } catch (error) {
     next(error);
   }

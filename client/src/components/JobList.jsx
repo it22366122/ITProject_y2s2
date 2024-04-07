@@ -2,12 +2,32 @@ import React, { useState } from "react";
 import SidebarDash from "../components/SidebarDash";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Table, TableCell, TableRow } from "flowbite-react";
+import { Table, TableCell, TableRow, Modal, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function JobList() {
   const { currentUser } = useSelector((state) => state.user);
   const [userJobs, setUserJobs] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [jobId, setJobId] = useState(" ");
+
+  const handleDeleteJob = async () => {
+    setShowModal(false);
+    try {
+      const res = await fetch(`/API/post/deleteJob/${jobId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setUserJobs((prev) => prev.filter((job) => job._id !== jobId));
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   console.log(userJobs);
   useEffect(() => {
@@ -33,7 +53,7 @@ export default function JobList() {
     <div className="table-auto md:mx-auto p-3">
       <h1 className="my-7 text-center font-semibold text-3xl">All Vacancies</h1>
       {currentUser.isAdmin && userJobs.length > 0 ? (
-        <div >
+        <div>
           <Table hoverable className="shadow-md ">
             <Table.Head>
               <Table.HeadCell>Date Updated</Table.HeadCell>
@@ -68,12 +88,15 @@ export default function JobList() {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      className="text-red-700 hover:underline"
-                      to={`/delete-job/${jobs._id}`}
+                    <span
+                      onClick={() => {
+                        setShowModal(true);
+                        setJobId(jobs._id);
+                      }}
+                      className="font-medium text-red-500 hover:underline cursor-pointer"
                     >
-                      <span>DELETE</span>
-                    </Link>
+                      DELETE
+                    </span>
                   </TableCell>
                 </TableRow>
               </Table.Body>
@@ -83,6 +106,31 @@ export default function JobList() {
       ) : (
         <p className="text-center">No Vacancies available at the moment</p>
       )}
+
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="md"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this job vacancy?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button onClick={handleDeleteJob} color="failure">
+                Yes, Delete{" "}
+              </Button>
+              <Button onClick={() => setShowModal(false)} color="gray">
+                No,Back{" "}
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
