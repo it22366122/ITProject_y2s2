@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AddJob from "./pages/AddJob";
 import UpdateJob from "./pages/UpdateJob";
+import JobPage from "./pages/JobPage";
 import JobList from "./components/JobList";
 
 export default function App() {
@@ -22,7 +23,8 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
-   
+        <Route path="/vacancies/:reference" element={<JobPage />} />
+
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

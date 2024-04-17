@@ -106,6 +106,17 @@ export default function AddJob() {
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
+            placeholder="Vacancy Reference #"
+            id="reference"
+            className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, reference: e.target.value })
+            }
+          ></TextInput>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row justify-between">
+          <TextInput
+            type="text"
             placeholder="Job Title"
             required
             id="title"

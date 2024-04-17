@@ -51,12 +51,18 @@ export default function JobList() {
 
   return (
     <div className="table-auto md:mx-auto p-3">
+      {currentUser.isAdmin && (
+        <Link to={"/add-vacancy"}>
+          <Button className="bg-teal-600">Add Job Vacancy</Button>
+        </Link>
+      )}
       <h1 className="my-7 text-center font-semibold text-3xl">All Vacancies</h1>
       {currentUser.isAdmin && userJobs.length > 0 ? (
         <div>
           <Table hoverable className="shadow-md ">
             <Table.Head>
               <Table.HeadCell>Date Updated</Table.HeadCell>
+              <Table.HeadCell>#Ref</Table.HeadCell>
               <Table.HeadCell>Image</Table.HeadCell>
               <Table.HeadCell>Title</Table.HeadCell>
               <Table.HeadCell>Salary</Table.HeadCell>
@@ -72,9 +78,24 @@ export default function JobList() {
                     {new Date(jobs.updatedAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
+                    <Link
+                      className="font-medium text-gray-900 dark:text-white"
+                      to={`/vacancies/${jobs.reference}`}
+                    >
+                      {jobs.reference}
+                    </Link>
+                  </TableCell>
+                  <TableCell>
                     <img src={jobs.image} alt="" className="w-20 h-10" />
                   </TableCell>
-                  <TableCell>{jobs.title}</TableCell>
+                  <TableCell>
+                    <Link
+                      className="font-medium text-gray-900 dark:text-white"
+                      to={`/vacancies/${jobs.reference}`}
+                    >
+                      {jobs.title}
+                    </Link>
+                  </TableCell>
                   <TableCell className="text-green-600">
                     {jobs.salary}
                   </TableCell>

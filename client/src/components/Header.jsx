@@ -15,7 +15,6 @@ export default function Header() {
   const path = useLocation().pathname;
   const { currentUser } = useSelector((state) => state.user);
   if (currentUser) {
-    
   }
   return (
     <Navbar className="bg-gradient-to-r from-sky-600 to-sky-800 ... shadow-xl ">
@@ -55,26 +54,27 @@ export default function Header() {
           Services
         </Navbar.Link>
         <Navbar.Link
-          active={path === "/career"}
-          href="#"
+          active={path === "/JobPage"}
+          href="/JobPage"
           className="text-white"
         >
           Career
         </Navbar.Link>
 
-        {currentUser ? ( <p style={{ color: "white", textAlign: 'left' }}>Welcome, {currentUser.username}</p>):(null)}
+        {currentUser ? (
+          <p style={{ color: "white", textAlign: "left" }}>
+            Welcome, {currentUser.username}
+          </p>
+        ) : null}
       </Navbar.Collapse>
-     
+
       {currentUser ? (
-        
         <Dropdown
           arrowIcon={false}
           inline
           label={
             <Avatar alt="profile pic" img={currentUser.profilePic} rounded />
-            
           }
-          
         >
           <Dropdown.Header>
             <span className="block text-sm">@ {currentUser.username}</span>

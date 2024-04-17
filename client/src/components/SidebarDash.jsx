@@ -10,6 +10,7 @@ import {
   HiOutlineUserGroup,
   HiAnnotation,
   HiChartPie,
+  HiDocumentDuplicate,
 } from "react-icons/hi";
 import { FaList } from "react-icons/fa6";
 import "../SidebarDash.css";
@@ -50,6 +51,29 @@ export default function SidebarDash() {
                 as="div"
               >
                 Vacancies
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=applications">
+              <Sidebar.Item
+                active={tab === "applications"}
+                icon={HiDocumentDuplicate}
+                as="div"
+              >
+                Applications
+              </Sidebar.Item>
+            </Link>
+          )}
+
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=users">
+              <Sidebar.Item
+                active={tab === "users"}
+                icon={HiOutlineUserGroup}
+                as="div"
+              >
+                Users
               </Sidebar.Item>
             </Link>
           )}
