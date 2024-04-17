@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Profile from "./pages/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import tnc from "./pages/tnc";
@@ -11,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AddJob from "./pages/AddJob";
+import UpdateJob from "./pages/UpdateJob";
 import JobList from "./components/JobList";
 
 export default function App() {
@@ -22,13 +22,14 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
-        <Route path="/profile" element={<Profile />} />
+   
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
         <Route element={<AdminPrivateRoute />}>
           <Route path="/add-vacancy" element={<AddJob />} />
+          <Route path="/update-vacancy/:jobId" element={<UpdateJob />} />
         </Route>
 
         <Route element={<AdminPrivateRoute />}>

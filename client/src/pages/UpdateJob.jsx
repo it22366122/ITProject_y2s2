@@ -1,5 +1,5 @@
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import {
@@ -9,15 +9,38 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { async } from "@firebase/util";
 
-export default function AddJob() {
+export default function UpdateJob() {
   const [file, setFile] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
+  const { jobId } = useParams();
+
+  useEffect(() => {
+    try {
+      const fetchJobs = async () => {
+        const res = await fetch(`/API/post/getjobs?jobId=${jobId}`);
+        const data = await res.json();
+        if (!res.ok) {
+          console.log(data.message);
+          setPublishError(data.message);
+          return;
+        }
+        if (res.ok) {
+          setPublishError(null);
+          setFormData(data.job[0]);
+        }
+      };
+      fetchJobs();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [jobId]);
   //console.log(formData);
 
   //function for submit form data to DB
@@ -25,8 +48,9 @@ export default function AddJob() {
   const handleSubmit = async (e) => {
     e.preventDefault(); //prevent refreshing
     try {
-      const res = await fetch("/API/post/create", {
-        method: "POST",
+      const res = await fetch(`/API/post/updatejob/${formData._id}`, {
+        
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -100,7 +124,7 @@ export default function AddJob() {
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">
-        Create Job Vacancy
+        Edit Job Vacancy
       </h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
@@ -113,11 +137,13 @@ export default function AddJob() {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
+            value={formData.title}
           ></TextInput>
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
+            value={formData.category}
           >
             <option value=" ">Select Job category</option>
             <option value="Caregiver">Caregiver</option>
@@ -135,6 +161,7 @@ export default function AddJob() {
             onChange={(e) =>
               setFormData({ ...formData, salary: e.target.value })
             }
+            value={formData.salary}
           ></TextInput>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
@@ -162,10 +189,11 @@ export default function AddJob() {
           onChange={(value) => {
             setFormData({ ...formData, description: value });
           }}
+          value={formData.description}
         />
         {publishError && <Alert color="failure">{publishError}</Alert>}
-        <Button type="submit" size="sm" outline>
-          Post Vacancy
+        <Button type="submit" size="sm" className="bg-yellow-400 ">
+          Update
         </Button>
       </form>
     </div>

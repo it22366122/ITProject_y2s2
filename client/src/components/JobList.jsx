@@ -82,7 +82,7 @@ export default function JobList() {
                   <TableCell>
                     <Link
                       className="text-yellow-400 hover:underline"
-                      to={`/update-job/${jobs._id}`}
+                      to={`/update-vacancy/${jobs._id}`}
                     >
                       <span>EDIT</span>
                     </Link>
