@@ -1,11 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
+import { Alert, Button, FileInput } from "flowbite-react";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function ApplyJob() {
+  const [publishError, setPublishError] = useState(null);
+  const [formData, setFormData] = useState({});
   const { reference } = useParams();
   const [error, setError] = useState(false);
   const [job, setJob] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const dataToSend = { ...formData, vacancyReference: reference };
+      const res = await fetch("/API/application/submitapplication", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend), // converts a JavaScript object or value to a JSON string.
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        window.alert("Application submitted successfully!");
+        navigate("/jobpage");
+      }
+    } catch (error) {
+      setPublishError("Error in submiting data!!!");
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,13 +78,16 @@ export default function ApplyJob() {
       <img src={job.image} alt="" className="h-20 w-13" />
 
       <div>
-        <form class="max-w-md mx-auto">
+        <form class="max-w-md mx-auto" onSubmit={handleSubmit}>
           <div class="relative z-0 w-full mb-5 group">
             <input
               type="text"
               id="fullName"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
               required
             />
             <label
@@ -63,6 +103,9 @@ export default function ApplyJob() {
               id="email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               required
             />
             <label
@@ -81,6 +124,9 @@ export default function ApplyJob() {
                 id="phone"
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
                 required
               />
               <label
@@ -101,9 +147,10 @@ export default function ApplyJob() {
             class="mt-1 text-sm text-gray-500 dark:text-gray-300"
             id="file_input_help"
           >
-            .pdf, .doc or docx only 
+            .pdf, .doc or docx only
           </p>
           <br />
+          {publishError && <Alert color="failure">{publishError}</Alert>}
 
           <button
             type="submit"
