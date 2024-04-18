@@ -55,7 +55,7 @@ export default function Header() {
         </Navbar.Link>
         <Navbar.Link
           active={path === "/JobPage"}
-          href="/JobPage"
+          href="/jobpage"
           className="text-white"
         >
           Career

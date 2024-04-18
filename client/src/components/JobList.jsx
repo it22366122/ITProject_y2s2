@@ -80,7 +80,7 @@ export default function JobList() {
                   <TableCell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={`/vacancies/${jobs.reference}`}
+                      to={"#"}
                     >
                       {jobs.reference}
                     </Link>
@@ -91,7 +91,7 @@ export default function JobList() {
                   <TableCell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={`/vacancies/${jobs.reference}`}
+                      to={"#"}
                     >
                       {jobs.title}
                     </Link>

@@ -13,6 +13,7 @@ import AddJob from "./pages/AddJob";
 import UpdateJob from "./pages/UpdateJob";
 import JobPage from "./pages/JobPage";
 import JobList from "./components/JobList";
+import ApplyJob from "./pages/ApplyJob";
 
 export default function App() {
   return (
@@ -23,7 +24,8 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
-        <Route path="/vacancies/:reference" element={<JobPage />} />
+        <Route path="/jobpage" element={<JobPage />} />
+        <Route path="/apply/:reference" element={<ApplyJob />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
