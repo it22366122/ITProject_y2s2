@@ -24,7 +24,7 @@ export const getjobs = async (req, res, next) => {
     const job = await Job.find({
       ...(req.query.jobId && { _id: req.query.jobId }),
       ...(req.query.category && { category: req.query.category }),
-      ...(req.query.reference) && { reference: req.query.reference},
+      ...(req.query.reference && { reference: req.query.reference }),
 
       ...(req.query.search && {
         title: { $regex: req.query.search, $options: "i" },
