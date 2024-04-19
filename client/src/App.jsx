@@ -13,6 +13,7 @@ import AddJob from "./pages/AddJob";
 import UpdateJob from "./pages/UpdateJob";
 import JobPage from "./pages/JobPage";
 import JobList from "./components/JobList";
+import ApplicationList from "./components/ApplicationList";
 import ApplyJob from "./pages/ApplyJob";
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
 
         <Route element={<AdminPrivateRoute />}>
           <Route path="/all-jobs" element={<JobList />} />
+          <Route path="/all-applications" element={<ApplicationList />} />
         </Route>
       </Routes>
     </BrowserRouter>

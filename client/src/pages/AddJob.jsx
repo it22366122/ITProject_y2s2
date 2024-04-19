@@ -12,13 +12,16 @@ import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 export default function AddJob() {
+
+  //for file uploading
   const [file, setFile] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
+
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
-  //console.log(formData);
+  
 
   //function for submit form data to DB
 
@@ -75,7 +78,7 @@ export default function AddJob() {
           setImageUploadProgress(null);
         },
         () => {
-          // This callback is called when the upload is complete
+         
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
               setImageUploadProgress(null);
@@ -83,7 +86,7 @@ export default function AddJob() {
               setFormData({ ...formData, image: downloadURL });
             })
             .catch((error) => {
-              // Handle  errors that occur during getting download URL
+             
               console.error("Error getting download URL:", error);
               setImageUploadError("Failed to get download URL");
               setImageUploadProgress(null);

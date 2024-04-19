@@ -26,7 +26,6 @@ app.listen(3000, () => {
 
 app.use("/API/auth", authRouter);
 app.use("/API/post", jobRoutes);
-
 app.use("/API/application", applicationRouter);
 
 //middleware for error handling

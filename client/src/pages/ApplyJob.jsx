@@ -13,6 +13,10 @@ import { useNavigate } from "react-router-dom";
 export default function ApplyJob() {
   const [publishError, setPublishError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [file, setFile] = useState(null);
+  const [fileUploadError, setFileUploadError] = useState(null);
+  const [fileUploadProgress, setFileUploadProgress] = useState(null);
+
   const { reference } = useParams();
   const [error, setError] = useState(false);
   const [job, setJob] = useState(null);
@@ -41,6 +45,63 @@ export default function ApplyJob() {
       }
     } catch (error) {
       setPublishError("Error in submiting data!!!");
+    }
+  };
+  const uploadFile = async () => {
+    try {
+      if (!file) {
+        setFileUploadError("File Error");
+        return;
+      }
+      setFileUploadError(null);
+
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "_" + file.name;
+      const storageRef = ref(storage, fileName);
+      const metadata = {
+        contentType: "application/pdf", // Specify content type as PDF
+      };
+
+      // Adjust content type based on the file type (PDF or DOCX)
+      if (
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ) {
+        metadata.contentType =
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"; // DOCX content type
+      }
+
+      const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setFileUploadProgress(progress.toFixed(0));
+        },
+        (error) => {
+          setFileUploadError("Upload file failed");
+          setFileUploadProgress(null);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              setFileUploadProgress(null);
+              setFileUploadError(null);
+              setFormData({ ...formData, cv: downloadURL });
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+              setFileUploadError("Failed to get download URL");
+              setFileUploadProgress(null);
+            });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      setFileUploadError("Upload failed");
+      setFileUploadProgress(null);
     }
   };
 
@@ -138,10 +199,17 @@ export default function ApplyJob() {
             </div>
           </div>
           <div className="flex gap-4 items-center justify-between border-4 border-grey-500 border-dotted p-3">
-            <FileInput type="file" accept=".pdf,.doc,.docx" />
-            <Button type="button" size="sm" outline>
+            <FileInput
+              typeof="file"
+              accept=".pdf,.doc,.docx"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+            <Button type="button" size="sm" outline onClick={uploadFile}>
               Upload CV
             </Button>
+            {fileUploadError && (
+              <Alert color="failure">{fileUploadError}</Alert>
+            )}
           </div>
           <p
             class="mt-1 text-sm text-gray-500 dark:text-gray-300"

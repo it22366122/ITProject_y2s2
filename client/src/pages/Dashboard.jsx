@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import ProfileDash from "../components/ProfileDash";
 import SidebarDash from "../components/SidebarDash";
 import JobList from "../components/JobList";
+import ApplicationList from "../components/ApplicationList";
 
 
 export default function Dashboard() {
@@ -20,13 +21,14 @@ export default function Dashboard() {
     <div className="min-h-screen flex flex-col md:flex-row">
       <div>
         {/*Side nav bar */}
-        <SidebarDash/>
+        <SidebarDash />
       </div>
 
       {/*Profile info section */}
       {tab === "profile" && <ProfileDash />}
 
-      {tab === "jobs" && <JobList/>}
+      {tab === "jobs" && <JobList />}
+      {tab === "applications" && <ApplicationList />}
     </div>
   );
 }
