@@ -24,6 +24,7 @@ export const getapplications = async (req, res, next) => {
       .skip(start);
 
     const totalApp = await Application.countDocuments();
+    
     res.status(200).json({
       totalApp,
       application,

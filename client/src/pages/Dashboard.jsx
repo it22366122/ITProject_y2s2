@@ -4,6 +4,7 @@ import ProfileDash from "../components/ProfileDash";
 import SidebarDash from "../components/SidebarDash";
 import JobList from "../components/JobList";
 import ApplicationList from "../components/ApplicationList";
+import Dash  from "../components/dash";
 
 
 export default function Dashboard() {
@@ -29,6 +30,7 @@ export default function Dashboard() {
 
       {tab === "jobs" && <JobList />}
       {tab === "applications" && <ApplicationList />}
+      {tab === "dash" && <Dash />}
     </div>
   );
 }
