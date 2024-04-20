@@ -134,9 +134,28 @@ export default function ApplyJob() {
 
   return (
     <div>
-      <h1>{job.title}</h1>
-      <p>{job.description}</p>
-      <img src={job.image} alt="" className="h-20 w-13" />
+      <a
+        href="#"
+        class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+      >
+        <img
+          class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+          src={job.image}
+          alt=""
+        />
+        <div class="flex flex-col justify-between p-4 leading-normal">
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {job.title}
+          </h5>
+          <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            Salary:{job.salary}
+          </p>
+        </div>
+      </a>
+
+      <h1 className="my-7 text-center font-semibold text-3xl">
+        Please fill this Applications
+      </h1>
 
       <div>
         <form class="max-w-md mx-auto" onSubmit={handleSubmit}>
@@ -181,7 +200,7 @@ export default function ApplyJob() {
             <div class="relative z-0 w-full mb-5 group">
               <input
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                pattern="0[0-9]{9}"
                 id="phone"
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "

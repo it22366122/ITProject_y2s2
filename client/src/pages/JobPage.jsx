@@ -20,18 +20,40 @@ export default function JobPage() {
       }
     };
 
-    if (currentUser && currentUser.isAdmin) {
-      fetchJobs();
-    }
-  }, []); // Empty dependency array ensures this effect runs only once
+    fetchJobs();
+  }, []);
+
+  // to remove quil html tags
+  const removeHTMLTags = (htmlContent) => {
+    const div = document.createElement("div");
+
+    div.innerHTML = htmlContent;
+    
+
+    return div.textContent || div.innerText;
+  };
 
   return (
     <div>
-      <h1 className="my-7 text-center font-semibold text-3xl">All Vacancies</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <section className="bg-center bg-no-repeat bg-[url('https://www.vestaeldercare.com/wp-content/uploads/2021/05/vesta-eldercare.png')] bg-gray-700 bg-blend-multiply">
+        <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
+            Explore Fulfilling Careers in Eldercare
+          </h1>
+          <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
+            Here at Flowbite we focus on markets where technology, innovation,
+            and capital can unlock long-term value and drive economic
+            growth.Here at Flowbite we focus on markets where technology,
+            innovation, and capital can unlock long-term value and drive
+            economic growth.
+          </p>
+        </div>
+      </section>
+
+      <div className="grid grid-cols-3 gap-4 p-10">
         {userJobs.map((job) => (
           <div
-            key={job.id} // Remember to provide a unique key for each item in the list
+            key={job.id}
             className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
             <a href="#">
@@ -41,11 +63,15 @@ export default function JobPage() {
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {job.title}
               </h5>
-              <p>Salary:{job.salary}</p>
+              <p>
+                <b>Salary: {job.salary}</b>
+              </p>
+              <br />
 
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                {job.description}
+                {removeHTMLTags(job.description)}
               </p>
+
               <Link to={`/apply/${job.reference}`}>
                 <a className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   Apply Now

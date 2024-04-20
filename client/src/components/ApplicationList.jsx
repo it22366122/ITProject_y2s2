@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Table, TableCell, TableRow, Modal, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, unstable_useViewTransitionState } from "react-router-dom";
 import { HiDocumentText } from "react-icons/hi";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -16,6 +16,7 @@ export default function ApplicationList() {
   const [showModal, setShowModal] = useState(false);
   const [appId, setAppId] = useState(" ");
   const storage = getStorage(app);
+  const [searchTerm, setSearchTerm] = useState("");
   console.log(userApp);
   useEffect(() => {
     const fetchApp = async () => {
@@ -56,11 +57,56 @@ export default function ApplicationList() {
     }
   };
 
+
+  //to search
+  const filterApp =
+    searchTerm.trim() === ""
+      ? userApp
+      : userApp.filter((app) => app.vacancyReference.includes(searchTerm));
+
   return (
     <div className="table-auto md:mx-auto p-3">
       <h1 className="my-7 text-center font-semibold text-3xl">
         All Applications
       </h1>
+
+      <form class="max-w-md mx-auto">
+        <label
+          for="default-search"
+          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          Search
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            id="ref"
+            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search Applications By Vacancy Reference..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            required
+          />
+         
+        </div>
+      </form>
+
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>Date Submitted</Table.HeadCell>
@@ -72,7 +118,7 @@ export default function ApplicationList() {
           <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
 
-        {userApp.map((apps) => (
+        {filterApp.map((apps) => (
           <Table.Body key={apps._id}>
             <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <TableCell>

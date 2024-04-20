@@ -19,6 +19,7 @@ export const getapplications = async (req, res, next) => {
 
     const application = await Application.find({
       ...(req.query.appId && { _id: req.query.appId }),
+      ...(req.query.vacancyReference && { _id: req.query.vacancyReference }),
     })
       .sort({ updatedAt: sort })
       .skip(start);
