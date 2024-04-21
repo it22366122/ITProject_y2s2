@@ -4,6 +4,7 @@ import dotenv from "dotenv"; // for hidden url
 import authRouter from "./routes/auth.route.js";
 import jobRoutes from "./routes/job.route.js";
 import applicationRouter from "./routes/application.route.js";
+import feedbackRouter from "./routes/feedback.route.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.listen(3000, () => {
 app.use("/API/auth", authRouter);
 app.use("/API/post", jobRoutes);
 app.use("/API/application", applicationRouter);
+app.use("/API/feedback", feedbackRouter);
 
 //middleware for error handling
 app.use((err, req, res, next) => {

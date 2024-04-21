@@ -12,7 +12,6 @@ import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 export default function AddJob() {
-
   //for file uploading
   const [file, setFile] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
@@ -21,7 +20,6 @@ export default function AddJob() {
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
-  
 
   //function for submit form data to DB
 
@@ -78,7 +76,6 @@ export default function AddJob() {
           setImageUploadProgress(null);
         },
         () => {
-         
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
               setImageUploadProgress(null);
@@ -86,7 +83,6 @@ export default function AddJob() {
               setFormData({ ...formData, image: downloadURL });
             })
             .catch((error) => {
-             
               console.error("Error getting download URL:", error);
               setImageUploadError("Failed to get download URL");
               setImageUploadProgress(null);
@@ -115,6 +111,8 @@ export default function AddJob() {
             onChange={(e) =>
               setFormData({ ...formData, reference: e.target.value })
             }
+            pattern="\S+"
+            title="Spaces are not allowed."
           ></TextInput>
         </div>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
@@ -142,13 +140,14 @@ export default function AddJob() {
             <option value="AdministrativeStaff:">Administrative Staff:</option>
           </Select>
           <TextInput
-            type="text"
+            type="number"
             placeholder="Salary"
             id="salary"
             className="flex-1"
             onChange={(e) =>
               setFormData({ ...formData, salary: e.target.value })
             }
+            min="1"
           ></TextInput>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
