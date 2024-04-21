@@ -5,6 +5,7 @@ import SidebarDash from "../components/SidebarDash";
 import JobList from "../components/JobList";
 import ApplicationList from "../components/ApplicationList";
 import Dash  from "../components/dash";
+import UserList from "../components/UserList";
 
 
 export default function Dashboard() {
@@ -31,6 +32,7 @@ export default function Dashboard() {
       {tab === "jobs" && <JobList />}
       {tab === "applications" && <ApplicationList />}
       {tab === "dash" && <Dash />}
+      {tab === "users" && <UserList />}
     </div>
   );
 }

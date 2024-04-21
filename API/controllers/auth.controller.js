@@ -93,3 +93,29 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
+export const getusers = async (req, res, next) => {
+  try {
+    const start = parseInt(req.query.start) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sort = req.query.order === "asc" ? 1 : -1;
+
+    const user = await User.find({
+      ...(req.query.fullName && { _id: req.query.fullName }),
+      ...(req.query.username && { category: req.query.username }),
+      
+
+     
+    })
+      .sort({ updatedAt: sort })
+      .skip(start);
+
+    const totalUsers = await User.countDocuments(); //to count total users in db
+
+    res.status(200).json({
+      totalUsers,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -6,11 +6,16 @@ import { Table, TableCell, TableRow, Modal, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
+import jsPDF from "jspdf";
+
+import "jspdf-autotable";
+
+
 export default function JobList() {
   const { currentUser } = useSelector((state) => state.user);
   const [userJobs, setUserJobs] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [jobId, setJobId] = useState(" ");
+  const [jobId, setJobId] = useState("");
 
   const handleDeleteJob = async () => {
     setShowModal(false);
@@ -29,7 +34,48 @@ export default function JobList() {
     }
   };
 
-  console.log(userJobs);
+  const handleDownloadPDF = () => {
+    const input = document.getElementById("joblist");
+
+    if (!input) {
+      console.error("Element with ID 'joblist' not found.");
+      return;
+    }
+
+    const tableData = [];
+
+    // read table data
+    const rows = input.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const rowData = [];
+      const cells = row.querySelectorAll("td, th");
+      cells.forEach((cell) => {
+        rowData.push(cell.textContent.trim());
+      });
+      tableData.push(rowData);
+    });
+
+    // Convert table data to PDF
+    const pdf = new jsPDF();
+    pdf.autoTable({
+      head: [
+        [
+          "Date Updated",
+          "#Ref",
+          "Image",
+          "Title",
+          "Salary(USD)",
+          "Category",
+          "Update",
+          "Delete",
+        ],
+      ],
+      body: tableData,
+    });
+
+    pdf.save("vacancy_list.pdf");
+  };
+
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -57,15 +103,19 @@ export default function JobList() {
         </Link>
       )}
       <h1 className="my-7 text-center font-semibold text-3xl">All Vacancies</h1>
+      <Button className="" onClick={handleDownloadPDF}>
+        Download List
+      </Button>{" "}
+      
       {currentUser.isAdmin && userJobs.length > 0 ? (
         <div>
-          <Table hoverable className="shadow-md ">
+          <Table hoverable className="shadow-md" id="joblist">
             <Table.Head>
               <Table.HeadCell>Date Updated</Table.HeadCell>
               <Table.HeadCell>#Ref</Table.HeadCell>
               <Table.HeadCell>Image</Table.HeadCell>
               <Table.HeadCell>Title</Table.HeadCell>
-              <Table.HeadCell>Salary</Table.HeadCell>
+              <Table.HeadCell>Salary(USD)</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
               <Table.HeadCell>Update</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
@@ -80,7 +130,7 @@ export default function JobList() {
                   <TableCell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={"#"}
+                      to={""}
                     >
                       {jobs.reference}
                     </Link>
@@ -91,7 +141,7 @@ export default function JobList() {
                   <TableCell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={"#"}
+                      to={""}
                     >
                       {jobs.title}
                     </Link>
@@ -127,7 +177,6 @@ export default function JobList() {
       ) : (
         <p className="text-center">No Vacancies available at the moment</p>
       )}
-
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}

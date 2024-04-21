@@ -10,6 +10,10 @@ import { getStorage } from "firebase/storage";
 
 import { app } from "../firebase";
 
+import jsPDF from "jspdf";
+
+import "jspdf-autotable";
+
 export default function ApplicationList() {
   const { currentUser } = useSelector((state) => state.user);
   const [userApp, setUserApp] = useState([]);
@@ -56,6 +60,48 @@ export default function ApplicationList() {
       console.log(error.message);
     }
   };
+  const handleDownloadPDF = () => {
+    const input = document.getElementById("applist");
+
+    if (!input) {
+      console.error("Element with ID 'joblist' not found.");
+      return;
+    }
+
+    const tableData = [];
+
+    // read table data
+    const rows = input.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const rowData = [];
+      const cells = row.querySelectorAll("td, th");
+      cells.forEach((cell) => {
+        rowData.push(cell.textContent.trim());
+      });
+      tableData.push(rowData);
+    });
+
+    // Convert table data to PDF
+    const pdf = new jsPDF();
+    pdf.autoTable({
+      head: [
+        [
+          "Date Submited",
+          "#Ref",
+          "Name",
+          "Phone",
+          "E-mail",
+          "CV",
+          "Actions",
+         
+        ],
+      ],
+      body: tableData,
+    });
+
+    pdf.save("application_list.pdf");
+  };
+
 
 
   //to search
@@ -69,7 +115,9 @@ export default function ApplicationList() {
       <h1 className="my-7 text-center font-semibold text-3xl">
         All Applications
       </h1>
-
+      <Button className="" onClick={handleDownloadPDF}>
+        Download List
+      </Button>{" "}
       <form class="max-w-md mx-auto">
         <label
           for="default-search"
@@ -103,14 +151,12 @@ export default function ApplicationList() {
             onChange={(e) => setSearchTerm(e.target.value)}
             required
           />
-         
         </div>
       </form>
-
-      <Table hoverable>
+      <Table hoverable id="applist">
         <Table.Head>
           <Table.HeadCell>Date Submitted</Table.HeadCell>
-          <Table.HeadCell>#VAcRef</Table.HeadCell>
+          <Table.HeadCell>#Reference</Table.HeadCell>
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Phone</Table.HeadCell>
           <Table.HeadCell>E-mail</Table.HeadCell>
@@ -120,14 +166,14 @@ export default function ApplicationList() {
 
         {filterApp.map((apps) => (
           <Table.Body key={apps._id}>
-            <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <TableRow className="bg-white dark:border-gray-700  dark:bg-gray-800">
               <TableCell>
                 {new Date(apps.updatedAt).toLocaleDateString()}
               </TableCell>
               <TableCell>
                 <Link
                   className="font-medium text-gray-900 dark:text-white"
-                  to={"#"}
+                  to={""}
                 >
                   {apps.vacancyReference}
                 </Link>
@@ -153,6 +199,11 @@ export default function ApplicationList() {
                   }}
                 >
                   REJECT
+                </span>
+              </TableCell>
+              <TableCell>
+                <span className="font-medium text-yellow-500 hover:underline cursor-pointer">
+                  RECRUIT
                 </span>
               </TableCell>
             </TableRow>

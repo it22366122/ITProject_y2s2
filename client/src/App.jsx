@@ -15,7 +15,7 @@ import JobPage from "./pages/JobPage";
 import JobList from "./components/JobList";
 import ApplicationList from "./components/ApplicationList";
 import ApplyJob from "./pages/ApplyJob";
-
+import UserList from "./components/UserList";
 export default function App() {
   return (
     <BrowserRouter>
@@ -39,6 +39,7 @@ export default function App() {
 
         <Route element={<AdminPrivateRoute />}>
           <Route path="/all-jobs" element={<JobList />} />
+          <Route path="/all-users" element={<UserList />} />
           <Route path="/all-applications" element={<ApplicationList />} />
         </Route>
       </Routes>

@@ -42,7 +42,7 @@ export default function Header() {
         <Navbar.Link
           active={path === "/about"}
           href="/about"
-          className="text-white"
+          className={path === "/about" ? "text-black" : "text-white"}
         >
           About
         </Navbar.Link>

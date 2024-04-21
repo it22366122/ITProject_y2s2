@@ -135,7 +135,7 @@ export default function ApplyJob() {
   return (
     <div>
       <a
-        href="#"
+        href="/jobpage"
         class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
       >
         <img
@@ -196,7 +196,6 @@ export default function ApplyJob() {
           <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 w-full mb-5 group">
               <input
-              
                 pattern="0[0-9]{9}"
                 title="Enter valid 10 digits"
                 id="phone"
