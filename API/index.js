@@ -1,10 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv"; // for hidden url
+import dotenv from "dotenv"; 
 import authRouter from "./routes/auth.route.js";
 import jobRoutes from "./routes/job.route.js";
 import applicationRouter from "./routes/application.route.js";
 import feedbackRouter from "./routes/feedback.route.js";
+import emailRoute from "./routes/mail.route.js";
+
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ const app = express();
 
 app.use(express.json());
 
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
@@ -29,6 +32,7 @@ app.use("/API/auth", authRouter);
 app.use("/API/post", jobRoutes);
 app.use("/API/application", applicationRouter);
 app.use("/API/feedback", feedbackRouter);
+app.use("/API/sendmail", emailRoute);
 
 //middleware for error handling
 app.use((err, req, res, next) => {

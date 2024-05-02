@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import AddJob from "./pages/AddJob";
 import UpdateJob from "./pages/UpdateJob";
+import Recruit from "./pages/Recruit";
 import JobPage from "./pages/JobPage";
 import JobList from "./components/JobList";
 import ApplicationList from "./components/ApplicationList";
@@ -35,6 +36,7 @@ export default function App() {
         <Route element={<AdminPrivateRoute />}>
           <Route path="/add-vacancy" element={<AddJob />} />
           <Route path="/update-vacancy/:jobId" element={<UpdateJob />} />
+          <Route path="/recruit/:email/:name" element={<Recruit />} />
         </Route>
 
         <Route element={<AdminPrivateRoute />}>

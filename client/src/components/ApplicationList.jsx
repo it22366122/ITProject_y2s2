@@ -202,9 +202,11 @@ export default function ApplicationList() {
                 </span>
               </TableCell>
               <TableCell>
-                <span className="font-medium text-yellow-500 hover:underline cursor-pointer">
-                  RECRUIT
-                </span>
+                <Link to={`/recruit/${apps.email}/${apps.fullName}`}>
+                  <span className="font-medium text-yellow-500 hover:underline cursor-pointer">
+                    RECRUIT
+                  </span>
+                </Link>
               </TableCell>
             </TableRow>
           </Table.Body>
