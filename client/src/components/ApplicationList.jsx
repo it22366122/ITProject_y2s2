@@ -92,7 +92,8 @@ export default function ApplicationList() {
           "Phone",
           "E-mail",
           "CV",
-          "Actions",
+          "STATUS",
+          
          
         ],
       ],
@@ -161,6 +162,7 @@ export default function ApplicationList() {
           <Table.HeadCell>Phone</Table.HeadCell>
           <Table.HeadCell>E-mail</Table.HeadCell>
           <Table.HeadCell>CV</Table.HeadCell>
+          <Table.HeadCell>STATUS</Table.HeadCell>
           <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
 
@@ -190,23 +192,41 @@ export default function ApplicationList() {
                   Click to View
                 </span>
               </TableCell>
-              <TableCell>
-                <span
-                  className="font-medium text-red-500 hover:underline cursor-pointer"
-                  onClick={() => {
-                    setShowModal(true);
-                    setAppId(apps._id);
-                  }}
-                >
-                  REJECT
-                </span>
+              <TableCell
+                className={`${
+                  apps.status === "ACCEPTED" ? "text-green-500" : "text-black"
+                }`}
+              >
+                {apps.status}
               </TableCell>
               <TableCell>
-                <Link to={`/recruit/${apps.email}/${apps.fullName}`}>
-                  <span className="font-medium text-yellow-500 hover:underline cursor-pointer">
-                    RECRUIT
+                {apps.status === "ACCEPTED" ? (
+                  <span className="font-medium text-red-500">.</span>
+                ) : (
+                  <span
+                    className="font-medium text-red-500 hover:underline cursor-pointer"
+                    onClick={() => {
+                      setShowModal(true);
+                      setAppId(apps._id);
+                    }}
+                  >
+                    REJECT
                   </span>
-                </Link>
+                )}
+              </TableCell>
+              <TableCell>
+                {apps.status === "ACCEPTED" ? (
+                  // If apps.status is "ACCEPTED", display "RECRUITED" in blue
+                  <span className="font-medium text-blue-500">.</span>
+                ) : (
+                  // If apps.status is not "ACCEPTED", display the RECRUIT link
+                  <Link
+                    to={`/recruit/${apps.email}/${apps.fullName}/${apps._id}`}
+                    className="font-medium text-yellow-500 hover:underline cursor-pointer"
+                  >
+                    RECRUIT
+                  </Link>
+                )}
               </TableCell>
             </TableRow>
           </Table.Body>

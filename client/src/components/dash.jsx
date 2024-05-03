@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  HiUser,
-  HiArrowSmRight,
+  
   HiDocumentText,
-  HiOutlineUserGroup,
-  HiAnnotation,
-  HiChartPie,
+  
   HiDocumentDuplicate,
 } from "react-icons/hi";
 
@@ -17,6 +14,7 @@ export default function dash() {
 
   const [totalVacancy, setTotalVacancy] = useState(0);
   const [totalApp, setTotalApp] = useState(0);
+  const [accApp, setAccApp] = useState(0);
 
   const { currentUser } = useSelector((state) => state.user);
 

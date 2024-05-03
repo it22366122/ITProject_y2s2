@@ -18,6 +18,10 @@ const applicationShcema = new mongoose.Schema(
     cv: {
       type: String,
     },
+    status: {
+      type: String,
+      default:"PENDING"
+    },
   },
   { timestamps: true }
 );

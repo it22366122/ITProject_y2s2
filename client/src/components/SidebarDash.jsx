@@ -65,6 +65,17 @@ export default function SidebarDash() {
               </Sidebar.Item>
             </Link>
           )}
+          {currentUser.isAdmin && (
+            <Link to="/dashboard?tab=analytics">
+              <Sidebar.Item
+                active={tab === "analytics"}
+                icon={HiChartPie}
+                as="div"
+              >
+                Analytics
+              </Sidebar.Item>
+            </Link>
+          )}
 
           {currentUser.isAdmin && (
             <Link to="/dashboard?tab=users">

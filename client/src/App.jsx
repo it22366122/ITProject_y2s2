@@ -36,7 +36,7 @@ export default function App() {
         <Route element={<AdminPrivateRoute />}>
           <Route path="/add-vacancy" element={<AddJob />} />
           <Route path="/update-vacancy/:jobId" element={<UpdateJob />} />
-          <Route path="/recruit/:email/:name" element={<Recruit />} />
+          <Route path="/recruit/:email/:name/:appId" element={<Recruit />} />
         </Route>
 
         <Route element={<AdminPrivateRoute />}>

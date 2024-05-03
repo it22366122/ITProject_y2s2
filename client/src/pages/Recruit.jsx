@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { Button } from "flowbite-react";
 
 function Recruit() {
-  const { email, name } = useParams();
+  const { email, name, appId } = useParams();
   const [formData, setFormData] = useState({
     email: email || "",
     name: name || "",
@@ -24,7 +25,8 @@ function Recruit() {
     e.preventDefault();
 
     try {
-      const response = await fetch("/API/sendmail/send-email", {
+     
+      const emailResponse = await fetch("/API/sendmail/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,25 +34,47 @@ function Recruit() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
+     
+      if (!emailResponse.ok) {
+        const errorText = await emailResponse.text();
         throw new Error(`Error sending email: ${errorText}`);
       }
 
-      const data = await response.json();
+      
+      const emailData = await emailResponse.json();
 
-      alert(data.message);
-      navigate("/dashboard?tab=applications");
+      
+      const statusResponse = await fetch(`/API/application/updatestatus/${appId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "ACCEPTED" }),
+      });
 
+     
+      if (!statusResponse.ok) {
+        const errorText = await statusResponse.text();
+        throw new Error(`Error updating application status: ${errorText}`);
+      }
+
+     
+      alert(emailData.message);
+
+     
       setFormData({
         email: formData.email,
         name: formData.name,
         date: "",
         time: "",
       });
+
+      
+      navigate("/dashboard?tab=applications");
     } catch (error) {
-      console.error("Error sending email:", error);
-      alert(`Error sending email: ${error.message}`);
+     
+      console.error("Error:", error);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -134,12 +158,9 @@ function Recruit() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Submit
-        </button>
+        <Button type="submit" className="mt-4 px-4 py-2 rounded">
+          Send E-mail
+        </Button>
       </form>
     </div>
   );

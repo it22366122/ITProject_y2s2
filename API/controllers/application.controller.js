@@ -26,14 +26,24 @@ export const getapplications = async (req, res, next) => {
       ...(req.query.appId && { _id: req.query.appId }),
       ...(req.query.vacancyReference && { _id: req.query.vacancyReference }),
     })
-      .sort({ updatedAt: sort })
+      .sort({ vacancyReference: sort })
       .skip(start);
 
     const totalApp = await Application.countDocuments();
 
+    //get accepted application count
+    const query = { status: "ACCEPTED" };
+    const acceptedCount = await Application.countDocuments(query);
+
+    //get pending application count
+    const query2 = { status: "PENDING" };
+    const pendingCount = await Application.countDocuments(query2);
+
     res.status(200).json({
       totalApp,
       application,
+      acceptedCount,
+      pendingCount,
     });
   } catch (error) {
     next(error);
@@ -105,3 +115,24 @@ export const deleteapp = async (req, res, next) => {
     res.status(500).send("Error deleting application");
   }
 };
+
+export const updateStatus = async(req,res,next)=>{
+
+  try {
+
+    const updatedStatus = await Application.findByIdAndUpdate(
+      req.params.appId,
+      {
+        $set:{
+          status: "ACCEPTED"
+        }
+      },
+       { new: true }
+    )
+    res.status(200).json(updatedStatus);
+    
+  } catch (error) {
+    next(error)
+    
+  }
+}

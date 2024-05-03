@@ -6,6 +6,7 @@ import JobList from "../components/JobList";
 import ApplicationList from "../components/ApplicationList";
 import Dash  from "../components/dash";
 import UserList from "../components/UserList";
+import Analytics from "../components/Analytics";
 
 
 export default function Dashboard() {
@@ -33,6 +34,7 @@ export default function Dashboard() {
       {tab === "applications" && <ApplicationList />}
       {tab === "dash" && <Dash />}
       {tab === "users" && <UserList />}
+      {tab === "analytics" && <Analytics />}
     </div>
   );
 }
