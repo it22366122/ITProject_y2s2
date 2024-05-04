@@ -83,6 +83,18 @@ function Recruit() {
       <h1 className="text-center text-3xl my-7 font-semibold">
         Employee Recruit Terminal
       </h1>
+
+<p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">Select desired interview date and time for the candidate |  the interview details will be sent to the applicant via a system generated E-mail</p>
+
+
+
+
+
+
+
+
+
+      
       <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         {/* Email input */}
         <div>

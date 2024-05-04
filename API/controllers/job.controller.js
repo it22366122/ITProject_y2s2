@@ -33,7 +33,7 @@ export const getjobs = async (req, res, next) => {
       .sort({ updatedAt: sort })
       .skip(start);
 
-    const totalVacancy = await Job.countDocuments(); //to count total vacs in db
+    const totalVacancy = await Job.countDocuments(); 
 
     res.status(200).json({
       totalVacancy,
@@ -44,7 +44,7 @@ export const getjobs = async (req, res, next) => {
   }
 };
 
-//finction to delete jobs
+//function to delete jobs
 export const deletejob = async (req, res, next) => {
   try {
     await Job.findByIdAndDelete(req.params.jobId);

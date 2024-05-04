@@ -49,6 +49,7 @@ export default function JobPage() {
           </p>
         </div>
       </section>
+      
 
       <div className="grid grid-cols-3 gap-4 p-10">
         {userJobs.map((job) => (
