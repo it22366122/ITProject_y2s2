@@ -6,6 +6,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import tnc from "./pages/tnc";
 import Header from "./components/Header";
+import Footer from "./components/Footer"; // Import Footer from the correct location
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
@@ -13,14 +14,16 @@ import AddJob from "./pages/AddJob";
 import UpdateJob from "./pages/UpdateJob";
 import Recruit from "./pages/Recruit";
 import JobPage from "./pages/JobPage";
+import ApplyJob from "./pages/ApplyJob";
 import JobList from "./components/JobList";
 import ApplicationList from "./components/ApplicationList";
-import ApplyJob from "./pages/ApplyJob";
 import UserList from "./components/UserList";
+
 export default function App() {
   return (
     <BrowserRouter>
       <Header />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
@@ -45,6 +48,8 @@ export default function App() {
           <Route path="/all-applications" element={<ApplicationList />} />
         </Route>
       </Routes>
+     
+      <Footer />
     </BrowserRouter>
   );
 }
