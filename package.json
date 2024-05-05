@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/x-charts": "^7.3.2",
     "@reduxjs/toolkit": "^2.2.1",
+    "apexcharts": "^3.49.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",

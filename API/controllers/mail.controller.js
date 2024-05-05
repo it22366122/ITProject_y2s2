@@ -36,6 +36,7 @@ export const sendEmail = async (email, name, date, time) => {
           { key: "Applicant Name", value: name },
           { key: "Interview Date", value: date },
           { key: "Interview Time", value: time },
+         
         ],
       },
       outro:
@@ -58,7 +59,7 @@ export const sendEmail = async (email, name, date, time) => {
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent:", info.response);
 
-    // Return a JSON response indicating success
+    
     return {
       status: "success",
       message: "Email sent successfully",

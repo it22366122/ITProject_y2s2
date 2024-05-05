@@ -2,21 +2,11 @@ import { useSelector } from "react-redux";
 
 import React, { useEffect, useState } from "react";
 
-
-
-
-
-
-
-
 export default function Analytics() {
   const [totalVacancy, setTotalVacancy] = useState(0);
   const [totalApp, setTotalApp] = useState(0);
   const [accApp, setAccApp] = useState(0); // accepted allpications
   const [penApp, setPenApp] = useState(0); // pen allpications
-
-  
-
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -51,11 +41,6 @@ export default function Analytics() {
       fetchAppli();
     }
   });
- 
 
-  return (
-    <div>
-      
-    </div>
-  );
+  return <div>{penApp}</div>;
 }

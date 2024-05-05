@@ -134,24 +134,26 @@ export default function ApplyJob() {
 
   return (
     <div>
-      <a
-        href="/jobpage"
-        className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-      >
-        <img
-          className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-          src={job.image}
-          alt=""
-        />
-        <div className="flex flex-col justify-between p-4 leading-normal">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {job.title}
-          </h5>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            Salary: {job.salary}
-          </p>
-        </div>
-      </a>
+      <div className="flex justify-center">
+        <a
+          href="/jobpage"
+          className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+        >
+          <img
+            className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+            src={job.image}
+            alt=""
+          />
+          <div className="flex flex-col justify-between p-4 leading-normal">
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {job.title}
+            </h5>
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              Salary: {job.salary}
+            </p>
+          </div>
+        </a>
+      </div>
 
       <h1 className="my-7 text-center font-semibold text-3xl">
         Please fill out this Application
@@ -160,6 +162,7 @@ export default function ApplyJob() {
       <div>
         <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
           <div className="relative z-0 w-full mb-5 group">
+            {/* full name input */}
             <input
               type="text"
               id="fullName"
